@@ -1,0 +1,12 @@
+@ValidateAllTheThings_HostAddress = http://localhost:5031
+
+POST {{ValidateAllTheThings_HostAddress}}/weatherforecast/
+Accept: application/json
+Content-Type: application/json
+
+{
+  "Days": 3,
+  "ZipCode": "12345"
+}
+
+###
