@@ -1,5 +1,6 @@
 ﻿
 using Ardalis.GuardClauses;
+using System.Reflection.Emit;
 
 internal class WeatherForecastEntity
 {
@@ -15,5 +16,14 @@ internal class WeatherForecastEntity
         Date = date;
         TemperatureC = Guard.Against.OutOfRange(temperatureC, nameof(temperatureC), -273, 200);
         ZipCode = Guard.Against.InvalidZipCode(zipCode);
+    }
+
+    public void UpdateTemperatureC(int newTemperatureC)
+    {
+        TemperatureC = Guard.Against.OutOfRange(newTemperatureC, nameof(newTemperatureC), -273, 200);
+    }
+    public void UpdateZipCode(string newZipCode)
+    {
+        ZipCode = Guard.Against.InvalidZipCode(newZipCode);
     }
 }

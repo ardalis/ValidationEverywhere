@@ -6,7 +6,15 @@ Content-Type: application/json
 
 {
   "Days": 3,
-  "ZipCode": "12345"
+  "ZipCode": "99999"
 }
+
+###
+
+@year=2026
+@month=2
+@day=29
+GET {{ValidateAllTheThings_HostAddress}}/weatherforecast/{{year}}/{{month}}/{{day}}
+Accept: application/json
 
 ###

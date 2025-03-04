@@ -29,6 +29,24 @@ public class WeatherService
         return forecasts;
     }
 
+    internal WeatherForecast GetForecastForDate(int year, int month, int day)
+    {
+        if (year < DateTime.Now.Year || year > DateTime.Now.Year + 2) throw new ArgumentOutOfRangeException("year is out of range");
+        if (month < 0 || month > 12) throw new ArgumentOutOfRangeException("month is out of range");
+        if (day < 0 || day > 31) throw new ArgumentOutOfRangeException("day is out of range");
+
+        DateOnly theDate;
+        try
+        {
+            theDate = new DateOnly(year, month, day);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception("Invalid date", ex);
+        }
+        return new WeatherForecast(theDate, Random.Shared.Next(-20, 55), Summaries[Random.Shared.Next(Summaries.Length)]);
+    }
+
     private void ValidateInputs(int days, string zipCode)
     {
         if (days < 1)

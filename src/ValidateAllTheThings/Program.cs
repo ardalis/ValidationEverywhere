@@ -1,3 +1,4 @@
+using Microsoft.VisualBasic;
 using System.ComponentModel.DataAnnotations;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,7 +16,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapPost("/weatherforecast", async (WeatherForecastRequest request,
-                                       HttpContext http,
                                        WeatherService weatherService) =>
 {
     // Manual validation since Minimal APIs do NOT automatically validate attributes
@@ -37,7 +37,33 @@ app.MapPost("/weatherforecast", async (WeatherForecastRequest request,
         return Results.BadRequest(new { Error = ex.Message });
     }
 })
-.WithName("GetWeatherForecast")
+.WithName("GetWeatherForecasts")
+.WithOpenApi();
+
+app.MapGet("/weatherforecast/{year}/{month}/{day}", async (
+    int year,
+    int month,
+    int day,
+    WeatherService weatherService) =>
+{
+    
+    if (year < DateTime.Now.Year || year > DateTime.Now.Year + 2) return Results.BadRequest("Year out of range");
+    if (month < 0 || month > 12) return Results.BadRequest("Month out of range");
+    if (day < 0 || day > 31) return Results.BadRequest("Day out of range");
+
+    try
+    {
+        var forecast = weatherService.GetForecastForDate(year, month, day);
+        return Results.Ok(forecast);
+    }
+    catch (Exception ex)
+    {
+        return Results.BadRequest(new { Error = ex.Message });
+    }
+
+}
+)
+.WithName("GetWeatherForecastForDate")
 .WithOpenApi();
 
 app.Run();
